@@ -1,5 +1,5 @@
 import { connectHandler, rootHandler, publicHandler } from './handlers.ts';
-
+Deno.connectTls({ port: 8080 });
 Deno.serve({
   port: 8080,
   handler: (request) => {
