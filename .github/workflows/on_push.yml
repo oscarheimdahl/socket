@@ -31,4 +31,4 @@ jobs:
           git commit -m "Add built artifacts"
 
           # Push to the builds branch
-          git push origin HEAD:deploy
+          git push https://$GH_TOKEN@github.com/oscarheimdahl/socket.git HEAD:deploy
