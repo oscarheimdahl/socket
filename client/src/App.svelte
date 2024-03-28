@@ -1,19 +1,39 @@
 <script lang="ts">
+  type Message = {
+    sentBy: 'self' | 'other';
+    message: string;
+  };
   const socket = new WebSocket('ws://localhost:8080/connect');
   let input = '';
-  let messages: string[] = [];
+  let messages: Message[] = [];
 
   socket.addEventListener('open', (event) => {
-    socket.send('Hello Server!');
+    socket.send('1');
   });
 
   socket.addEventListener('message', (event) => {
-    messages = messages.concat(event.data);
+    if (event.data === '1')
+      return (messages = messages.concat({
+        sentBy: 'other',
+        message: 'Someone joined!',
+      }));
+    if (event.data === '2')
+      return (messages = messages.concat({
+        sentBy: 'other',
+        message: 'Someone Left!',
+      }));
+    messages = messages.concat({
+      sentBy: 'other',
+      message: event.data,
+    });
   });
 
   async function handleClick() {
     socket.send(input);
-    messages = messages.concat(input);
+    messages = messages.concat({
+      sentBy: 'self',
+      message: input,
+    });
     input = '';
   }
 </script>
@@ -22,7 +42,7 @@
   <div class="container">
     <div class="messages">
       {#each messages as message}
-        <p>{message}</p>
+        <p class={message.sentBy}>{message.message}</p>
       {/each}
     </div>
     <div>
@@ -48,6 +68,13 @@
     height: 20rem;
     overflow: scroll;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
+    justify-items: flex-end;
+  }
+  .messages p:first-child {
+    margin-top: auto;
+  }
+  .messages p.self {
+    text-align: right;
   }
 </style>
