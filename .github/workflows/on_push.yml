@@ -11,9 +11,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-        with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
       - uses: pnpm/action-setup@v3
         with:
           version: 8
@@ -28,4 +25,3 @@ jobs:
       - uses: EndBug/add-and-commit@v9
         with:
           new_branch: deploy
-          push: origin deploy --set-upstream --force
