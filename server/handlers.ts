@@ -18,7 +18,7 @@ export async function publicHandler(request: Request) {
   const filePath = url.pathname.substring(1);
   const fileType = filePath.split('.').at(-1)!;
   try {
-    const file = await Deno.open('server/' + filePath, { read: true });
+    const file = await Deno.open(filePath, { read: true });
     return new Response(file.readable, {
       headers: { 'content-type': typeToMime(fileType) },
     });
@@ -29,6 +29,6 @@ export async function publicHandler(request: Request) {
 }
 
 export async function rootHandler(_request: Request) {
-  const file = await Deno.open('public/index.html', { read: true });
+  const file = await Deno.open('server/public/index.html', { read: true });
   return new Response(file.readable);
 }
