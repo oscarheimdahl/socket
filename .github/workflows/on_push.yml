@@ -31,7 +31,7 @@ jobs:
           git config --local user.name "GitHub Actions"
 
           git add .
-          git add --force client/public
+          git add --force server/public
           git commit -m "Add built artifacts"
 
           # Push to the builds branch
