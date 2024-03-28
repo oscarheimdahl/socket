@@ -3,7 +3,8 @@
     sentBy: 'self' | 'other';
     message: string;
   };
-  const socket = new WebSocket('ws://' + window.location.host + '/connect');
+  const socket = new WebSocket('wss://' + window.location.host + '/connect');
+  // const socket = new WebSocket('wss://' + 'localhost:8080' + '/connect');
   let input = '';
   let messages: Message[] = [];
 
