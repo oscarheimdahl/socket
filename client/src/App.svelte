@@ -8,12 +8,13 @@
   });
 
   socket.addEventListener('message', (event) => {
-    console.log(`🔴`);
     messages = messages.concat(event.data);
   });
 
   async function handleClick() {
     socket.send(input);
+    messages = messages.concat(input);
+    input = '';
   }
 </script>
 
