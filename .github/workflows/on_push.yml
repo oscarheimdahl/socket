@@ -20,10 +20,13 @@ jobs:
 
       - name: Build your app
         run: |
-          cd client && pnpm install && pnpm build
+          cd client
+          pnpm install
+          pnpm build
 
       - name: Commit built artifacts
         run: |
+          ls
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
 
