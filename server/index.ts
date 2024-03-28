@@ -16,6 +16,8 @@ Deno.serve({
     if (route === '/') {
       return rootHandler(request);
     }
+    console.log(`🔴`);
+    console.log(request);
     return new Response(null, { status: 404 });
   },
 });

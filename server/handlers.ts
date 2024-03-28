@@ -1,4 +1,4 @@
-// import { initSocket } from './socket.ts';
+import { initSocket } from './socket.ts';
 import { msg, typeToMime } from './helpers.ts';
 
 export function connectHandler(request: Request) {
@@ -8,7 +8,7 @@ export function connectHandler(request: Request) {
 
   const { socket, response } = Deno.upgradeWebSocket(request);
 
-  // initSocket(socket);
+  initSocket(socket);
 
   return response;
 }
