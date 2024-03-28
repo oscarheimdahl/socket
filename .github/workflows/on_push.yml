@@ -31,6 +31,7 @@ jobs:
           git config --local user.name "GitHub Actions"
 
           git branch -D deploy
+          git checkout -b deploy
           git add .
           git add --force server/public
           git commit -m "Add built artifacts"
