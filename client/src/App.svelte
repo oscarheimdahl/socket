@@ -29,6 +29,7 @@
   });
 
   async function handleClick() {
+    if (!input.trim()) return;
     socket.send(input);
     messages = messages.concat({
       sentBy: 'self',
@@ -38,43 +39,25 @@
   }
 </script>
 
-<main>
-  <div class="container">
-    <div class="messages">
+<main class="bg-gray-950 grid place-items-center h-full">
+  <div class="flex justify-between flex-col gap-1">
+    <div class="messages h-96 bg-teal-100 rounded-t-sm p-2">
       {#each messages as message}
-        <p class={message.sentBy}>{message.message}</p>
+        <p class={`${message.sentBy === 'self' ? 'text-right' : ''}`}>
+          {message.message}
+        </p>
       {/each}
     </div>
-    <div>
-      <input bind:value={input} type="text" />
-      <button on:click={handleClick}>Socket</button>
-    </div>
+    <form on:submit|preventDefault={() => {}} class="flex gap-1">
+      <input class="rounded-bl-sm" bind:value={input} type="text" />
+      <button
+        class="bg-blue-200 px-1 rounded-br-sm"
+        type="submit"
+        on:click={handleClick}>Send</button
+      >
+    </form>
   </div>
 </main>
 
 <style>
-  main {
-    display: grid;
-    place-items: center;
-    height: 100%;
-  }
-  .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 1rem;
-  }
-  .messages {
-    height: 20rem;
-    overflow: scroll;
-    display: flex;
-    flex-direction: column;
-    justify-items: flex-end;
-  }
-  .messages p:first-child {
-    margin-top: auto;
-  }
-  .messages p.self {
-    text-align: right;
-  }
 </style>
