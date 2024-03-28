@@ -1,39 +1,52 @@
 <script lang="ts">
+  const socket = new WebSocket('ws://localhost:8080/connect');
+  let input = '';
+  let messages: string[] = [];
+
+  socket.addEventListener('open', (event) => {
+    socket.send('Hello Server!');
+  });
+
+  socket.addEventListener('message', (event) => {
+    console.log(`🔴`);
+    messages = messages.concat(event.data);
+  });
+
   async function handleClick() {
-    const socket = new WebSocket('ws://localhost:8080/connect');
-
-    socket.addEventListener('open', (event) => {
-      socket.send('Hello Server!');
-    });
-
-    socket.addEventListener('message', (event) => {
-      console.log('Message from server ', event.data);
-    });
-
-    setTimeout(() => {
-      socket.send('Hello Server!');
-    }, 2000);
+    socket.send(input);
   }
 </script>
 
 <main>
-  <button on:click={handleClick}>Socket</button>
+  <div class="container">
+    <div class="messages">
+      {#each messages as message}
+        <p>{message}</p>
+      {/each}
+    </div>
+    <div>
+      <input bind:value={input} type="text" />
+      <button on:click={handleClick}>Socket</button>
+    </div>
+  </div>
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
+  main {
+    display: grid;
+    place-items: center;
+    height: 100%;
   }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
   }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
+  .messages {
+    height: 20rem;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column-reverse;
   }
 </style>
