@@ -30,7 +30,7 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
 
-          git pull origin HEAD:deploy
+          git branch -D deploy
           git add .
           git add --force server/public
           git commit -m "Add built artifacts"
