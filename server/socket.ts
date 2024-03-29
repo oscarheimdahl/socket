@@ -36,7 +36,6 @@ export function attachListeners(thisSocket: Socket) {
       broadcastMessage(thisSocket, topic, data);
     }
     if (topic === TOPICS.UPDATE_NAME) {
-      console.log(data);
       thisSocket.name = data;
       broadcastUsers(true);
     }

@@ -8,6 +8,7 @@
   import DotBackground from './lib/DotBackground.svelte';
 
   let input = '';
+  let displayNameInput: HTMLInputElement;
   let messageDiv: HTMLDivElement;
   let messages: Message[] = [];
   let users: string | undefined[] = [];
@@ -27,7 +28,6 @@
   });
 
   onTopic(TOPICS.USER_JOIN, (data) => {
-    console.log(data);
     users = data;
   });
 
@@ -42,9 +42,10 @@
     scrollToBottom();
   }
 
-  function handleDisplayNameChange(e: Event) {
-    const target = e.target as HTMLInputElement;
-    send(TOPICS.UPDATE_NAME, target.value);
+  function handleDisplayNameChange() {
+    const lettersOnly = displayNameInput.value.replace(/[^a-zA-Z]/g, '');
+    displayNameInput.value = lettersOnly;
+    send(TOPICS.UPDATE_NAME, lettersOnly);
   }
 </script>
 
@@ -52,11 +53,14 @@
   <ShadowBlurs />
   <DotBackground />
 
-  <div class="grid-container grid gap-2 w-full px-2 z-10">
-    <div class=""></div>
+  <div
+    class="grid-container gap-2 w-full px-2 z-10 flex justify-center sm:grid"
+  >
+    <div class="hidden sm:block"></div>
     <div class="flex flex-col gap-2 relative w-80">
       <input
-        on:input={(e) => handleDisplayNameChange(e)}
+        on:input={handleDisplayNameChange}
+        bind:this={displayNameInput}
         class="h-6 flex justify-end bg-transparent text-gray-500 outline-none font-bold px-2 placeholder-gray-800"
         placeholder="Display Name"
         type="text"
@@ -78,12 +82,22 @@
         <SendButton {handleClick} />
       </form>
     </div>
-    <div class="text-gray-600 mt-8">
+    <div class="text-gray-600 mt-8 hidden sm:block">
       <ul class="flex flex-col gap-2">
         {#each users as user}
-          <li class="bg-black w-fit border border-gray-500 p-1 text-gray-500">
-            {user || 'Unknown'}
-          </li>
+          {#if !user}
+            <li
+              class="bg-black italic w-fit border border-gray-500 px-2 py-1 text-gray-500"
+            >
+              Unknown
+            </li>
+          {:else}
+            <li
+              class="bg-black w-fit border border-gray-500 px-2 py-1 text-gray-500"
+            >
+              {user}
+            </li>
+          {/if}
         {/each}
       </ul>
     </div>
