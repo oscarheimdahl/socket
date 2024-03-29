@@ -11,7 +11,7 @@
 <div class={`flex flex-col gap-1 ${self ? 'self-end items-end' : ''}`}>
   {#if !self && !sameSenderAsPreviousMessage}
     <span class="text-gray-500 text-sm">
-      {message.senderName}
+      {message.senderName || 'Unknown'}
     </span>
   {/if}
   <div

@@ -1,33 +1,17 @@
 <script lang="ts">
+  import Messages from './lib/Messages.svelte';
   import { onTopic, send } from './lib/socket';
   import { TOPICS } from '../../topics';
   import type { Message } from './lib/types';
-  import MessageBubble from './lib/MessageBubble.svelte';
   import ShadowBlurs from './lib/ShadowBlurs.svelte';
   import SendButton from './lib/SendButton.svelte';
   import DotBackground from './lib/DotBackground.svelte';
+  import { addMessage } from './lib/store/store';
 
   let input = '';
   let displayNameInput: HTMLInputElement;
-  let messageDiv: HTMLDivElement;
   let messages: Message[] = [];
   let users: string | undefined[] = [];
-
-  function scrollToBottom() {
-    setTimeout(() => {
-      messageDiv.scrollTop = messageDiv.scrollHeight;
-    }, 0);
-  }
-
-  onTopic(TOPICS.NEW_MESSAGE, (data) => {
-    messages = messages.concat({
-      sentBy: 'other',
-      senderName: data.from,
-      senderId: data.senderId,
-      message: data.message,
-    });
-    scrollToBottom();
-  });
 
   onTopic(TOPICS.USER_JOIN, (data) => {
     users = data;
@@ -36,18 +20,17 @@
   async function handleClick() {
     if (!input.trim()) return;
     send(TOPICS.NEW_MESSAGE, input);
-    messages = messages.concat({
+    addMessage({
       sentBy: 'self',
       senderId: 'self',
       message: input,
       senderName: displayNameInput.value,
     });
     input = '';
-    scrollToBottom();
   }
 
   function handleDisplayNameChange() {
-    const lettersOnly = displayNameInput.value.replace(/[^a-zA-Z]/g, '');
+    const lettersOnly = displayNameInput.value.replace(/[^a-z A-Z]/g, '');
     displayNameInput.value = lettersOnly;
     send(TOPICS.UPDATE_NAME, lettersOnly);
   }
@@ -69,18 +52,7 @@
         placeholder="Display Name"
         type="text"
       />
-      <div
-        bind:this={messageDiv}
-        class="h-96 w-full no-scrollbar bg-black border-gray-500 border p-4 overflow-y-scroll flex flex-col gap-2"
-      >
-        {#each messages as message, i}
-          <MessageBubble
-            sameSenderAsPreviousMessage={message.senderId ===
-              messages[i - 1]?.senderId}
-            {message}
-          />
-        {/each}
-      </div>
+      <Messages />
       <form on:submit|preventDefault={() => {}} class="group flex w-full gap-2">
         <input
           class="rounded-none w-full outline-none p-1 bg-black text-white border border-gray-500"
@@ -101,7 +73,7 @@
             </li>
           {:else}
             <li
-              class="bg-black w-fit border border-gray-500 px-2 py-1 text-gray-500"
+              class="bg-black w-fit border border-gray-500 px-2 py-1 text-fuchsia-900"
             >
               {user}
             </li>
