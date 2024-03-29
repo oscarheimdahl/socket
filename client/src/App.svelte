@@ -1,64 +1,73 @@
 <script lang="ts">
-  type Message = {
-    sentBy: 'self' | 'other';
-    message: string;
-  };
-  const socket = new WebSocket('wss://' + window.location.host + '/connect');
-  // const socket = new WebSocket('wss://' + 'localhost:8080' + '/connect');
+  import { onTopic, send } from './lib/socket';
+  import { TOPICS } from '../../topics';
+  import type { Message } from './lib/types';
+  import MessageBubble from './lib/MessageBubble.svelte';
+  import ShadowBlurs from './lib/ShadowBlurs.svelte';
+  import SendButton from './lib/SendButton.svelte';
+
   let input = '';
+  let messageDiv: HTMLDivElement;
   let messages: Message[] = [];
 
-  socket.addEventListener('open', (event) => {
-    socket.send('1');
-  });
+  function scrollToBottom() {
+    setTimeout(() => {
+      messageDiv.scrollTop = messageDiv.scrollHeight;
+    }, 0);
+  }
 
-  socket.addEventListener('message', (event) => {
-    if (event.data === '1')
-      return (messages = messages.concat({
-        sentBy: 'other',
-        message: 'Someone joined!',
-      }));
-    if (event.data === '2')
-      return (messages = messages.concat({
-        sentBy: 'other',
-        message: 'Someone Left!',
-      }));
+  onTopic(TOPICS.NEW_MESSAGE, (message: string) => {
     messages = messages.concat({
       sentBy: 'other',
-      message: event.data,
+      message,
     });
+    scrollToBottom();
   });
 
   async function handleClick() {
     if (!input.trim()) return;
-    socket.send(input);
+    send(TOPICS.NEW_MESSAGE, input);
     messages = messages.concat({
       sentBy: 'self',
       message: input,
     });
     input = '';
+    scrollToBottom();
   }
 </script>
 
-<main class="bg-gray-950 grid place-items-center h-full">
-  <div class="flex justify-between flex-col gap-1">
-    <div class="messages h-96 bg-teal-100 rounded-t-sm p-2">
+<main class="bg-black grid place-items-center h-full">
+  <ShadowBlurs />
+  <div
+    class="box relative z-10 flex justify-between flex-col gap-2 w-64 shadow-sm"
+  >
+    <div
+      bind:this={messageDiv}
+      class="h-96 no-scrollbar bg-black border-gray-500 border p-4 overflow-y-scroll flex flex-col gap-2"
+    >
       {#each messages as message}
-        <p class={`${message.sentBy === 'self' ? 'text-right' : ''}`}>
-          {message.message}
-        </p>
+        <MessageBubble {message} />
       {/each}
     </div>
-    <form on:submit|preventDefault={() => {}} class="flex gap-1">
-      <input class="rounded-bl-sm" bind:value={input} type="text" />
-      <button
-        class="bg-blue-200 px-1 rounded-br-sm"
-        type="submit"
-        on:click={handleClick}>Send</button
-      >
+    <form on:submit|preventDefault={() => {}} class="flex w-full gap-2">
+      <input
+        class="peer rounded-none outline-none p-1 bg-black text-white border border-gray-500"
+        bind:value={input}
+        type="text"
+      />
+      <SendButton {handleClick} />
     </form>
   </div>
 </main>
 
 <style>
+  .box::after {
+    content: '';
+    width: 6rem;
+    height: 100%;
+    position: absolute;
+    top: -0.3rem;
+    border-top: 1px solid gray;
+    pointer-events: none;
+  }
 </style>
