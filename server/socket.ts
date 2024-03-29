@@ -2,13 +2,13 @@ import { TOPICS } from '../topics.ts';
 type Socket = {
   id: string;
   socket: WebSocket;
-  name: string;
+  name?: string;
 };
 
 let sockets: Socket[] = [];
 
 export function initSocket(socket: WebSocket) {
-  const newSocket = { socket, id: crypto.randomUUID(), name: 'Unknown' };
+  const newSocket = { socket, id: crypto.randomUUID() };
   attachListeners(newSocket);
 }
 
