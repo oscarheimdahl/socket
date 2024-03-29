@@ -1,27 +1,38 @@
-<div
-  class=" z-0 shadow-blur absolute flex size-4 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2"
-></div>
-<div
-  class=" z-0 shadow-blur-2 absolute flex size-4 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2"
-></div>
-<div
-  class=" z-0 shadow-blur-3 absolute flex size-4 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2"
-></div>
-<div
-  class=" z-0 shadow-blur-4 absolute flex size-4 -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2"
-></div>
+<div class="bg z-0 absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+  <div class="shadow-blur"></div>
+  <div class="shadow-blur-2"></div>
+  <div class="shadow-blur-3"></div>
+  <div class="shadow-blur-4"></div>
+  <div class="shadow-blur-5"></div>
+</div>
 
 <style>
+  .bg {
+    animation: spin 100s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
   .shadow-blur {
-    box-shadow: 0 0 100px 100px rgba(255, 255, 255, 0.067);
+    box-shadow: 100px 0px 300px 130px rgba(180, 16, 217, 0.15);
   }
   .shadow-blur-2 {
-    box-shadow: 100px 50px 300px 100px rgba(248, 8, 8, 0.067);
+    box-shadow: 100px 50px 600px 130px rgba(248, 8, 8, 0.15);
   }
   .shadow-blur-3 {
-    box-shadow: -100px -50px 100px 100px rgba(8, 36, 248, 0.067);
+    box-shadow: -100px -50px 300px 130px rgba(147, 16, 217, 0.15);
   }
   .shadow-blur-4 {
-    box-shadow: -100px 70px 200px 100px rgba(76, 248, 8, 0.067);
+    box-shadow: -100px 70px 500px 130px rgba(170, 16, 217, 0.15);
+  }
+  .shadow-blur-5 {
+    box-shadow: 0 -100px 1000px 130px rgba(80, 8, 248, 0.15);
   }
 </style>

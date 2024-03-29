@@ -1,3 +1,5 @@
+import { TOPICS } from '../../../../topics';
+
 const DEV = import.meta.env.MODE === 'development';
 
 const socketUrl = DEV
@@ -12,6 +14,10 @@ socket.addEventListener('message', (event) => {
   onMessageCallbacks[topic]?.forEach((callback) => {
     callback(data);
   });
+});
+
+socket.addEventListener('open', () => {
+  send(TOPICS.USER_JOIN);
 });
 
 export function send(topic: string, data?: any) {

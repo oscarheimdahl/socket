@@ -2,6 +2,7 @@ import { TOPICS } from '../topics.ts';
 type Socket = {
   id: string;
   socket: WebSocket;
+  name?: string;
 };
 
 let sockets: Socket[] = [];
@@ -11,37 +12,58 @@ export function initSocket(socket: WebSocket) {
   attachListeners(newSocket);
 }
 
-export function attachListeners(newSocket: Socket) {
-  newSocket.socket.onopen = () => {
-    console.log(newSocket.id);
-    sockets.push(newSocket);
+export function attachListeners(thisSocket: Socket) {
+  function broadcastUsers(includeSelf = false) {
+    broadcastMessage(
+      thisSocket,
+      TOPICS.USER_JOIN,
+      sockets.map((socket) => socket.name),
+      { includeSelf }
+    );
+  }
+  function removeThisSocket() {
+    sockets = sockets.filter((socket) => socket.id !== thisSocket.id);
+  }
+
+  thisSocket.socket.onopen = () => {
+    sockets.push(thisSocket);
+    broadcastUsers(true);
   };
-  newSocket.socket.onmessage = (event) => {
+  thisSocket.socket.onmessage = (event) => {
     const { topic, data } = JSON.parse(event.data);
-    console.log(topic, data);
 
     if (topic === TOPICS.NEW_MESSAGE) {
-      handleNewMessage(newSocket, data);
+      broadcastMessage(thisSocket, topic, data);
+    }
+    if (topic === TOPICS.UPDATE_NAME) {
+      console.log(data);
+      thisSocket.name = data;
+      broadcastUsers(true);
     }
   };
-  newSocket.socket.onclose = () => {
-    sockets = sockets.filter((otherSocket) => otherSocket.id !== newSocket.id);
-    sockets.forEach((s) => {
-      if (s.socket.readyState === WebSocket.OPEN) s.socket.send('2');
-    });
-    console.log('DISCONNECTED');
+  thisSocket.socket.onclose = () => {
+    removeThisSocket();
+    broadcastUsers();
   };
-  newSocket.socket.onerror = () => {
-    sockets = sockets.filter((s) => s.id !== newSocket.id);
-    console.log('ERROR');
+  thisSocket.socket.onerror = () => {
+    removeThisSocket();
+    broadcastUsers();
   };
 }
 
-function handleNewMessage(thisSocket: Socket, data: any) {
+function broadcastMessage(
+  thisSocket: Socket,
+  topic: string,
+  data?: any,
+  options?: { includeSelf: boolean }
+) {
   sockets.forEach((otherSocket) => {
-    if (otherSocket.id === thisSocket.id) return;
-    otherSocket.socket.send(
-      JSON.stringify({ topic: TOPICS.NEW_MESSAGE, data })
-    );
+    if (!options?.includeSelf && otherSocket.id === thisSocket.id) return;
+    sendMessage(otherSocket.socket, topic, data);
   });
+}
+
+function sendMessage(socket: WebSocket, topic: string, data?: any) {
+  if (socket.readyState !== WebSocket.OPEN) return;
+  socket.send(JSON.stringify({ topic, data }));
 }
