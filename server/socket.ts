@@ -2,13 +2,13 @@ import { TOPICS } from '../topics.ts';
 type Socket = {
   id: string;
   socket: WebSocket;
-  name?: string;
+  name: string;
 };
 
 let sockets: Socket[] = [];
 
 export function initSocket(socket: WebSocket) {
-  const newSocket = { socket, id: crypto.randomUUID() };
+  const newSocket = { socket, id: crypto.randomUUID(), name: 'Unknown' };
   attachListeners(newSocket);
 }
 
@@ -33,7 +33,11 @@ export function attachListeners(thisSocket: Socket) {
     const { topic, data } = JSON.parse(event.data);
 
     if (topic === TOPICS.NEW_MESSAGE) {
-      broadcastMessage(thisSocket, topic, data);
+      broadcastMessage(thisSocket, topic, {
+        from: thisSocket.name,
+        message: data,
+        senderId: thisSocket.id,
+      });
     }
     if (topic === TOPICS.UPDATE_NAME) {
       thisSocket.name = data;

@@ -22,7 +22,9 @@
   onTopic(TOPICS.NEW_MESSAGE, (data) => {
     messages = messages.concat({
       sentBy: 'other',
-      message: data,
+      senderName: data.from,
+      senderId: data.senderId,
+      message: data.message,
     });
     scrollToBottom();
   });
@@ -36,7 +38,9 @@
     send(TOPICS.NEW_MESSAGE, input);
     messages = messages.concat({
       sentBy: 'self',
+      senderId: 'self',
       message: input,
+      senderName: displayNameInput.value,
     });
     input = '';
     scrollToBottom();
@@ -69,8 +73,12 @@
         bind:this={messageDiv}
         class="h-96 w-full no-scrollbar bg-black border-gray-500 border p-4 overflow-y-scroll flex flex-col gap-2"
       >
-        {#each messages as message}
-          <MessageBubble {message} />
+        {#each messages as message, i}
+          <MessageBubble
+            sameSenderAsPreviousMessage={message.senderId ===
+              messages[i - 1]?.senderId}
+            {message}
+          />
         {/each}
       </div>
       <form on:submit|preventDefault={() => {}} class="group flex w-full gap-2">
