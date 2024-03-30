@@ -26,13 +26,16 @@
 <div class="bg fixed top-0 left-0 w-full h-full">
   {#each positions as { x, y }, i}
     <div
-      class="ease-linear absolute size-2 bg-white opacity-50 rounded-full transition-transform duration-100"
+      class="cursor ease-linear absolute size-[2px] bg-[#ffffff] rounded-full transition-transform duration-100"
       style="transform: translateX({x}px) translateY({y}px);"
     ></div>
   {/each}
 </div>
 
 <style>
+  .cursor {
+    box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.5);
+  }
   .bg {
     background-size: 8px 8px;
     background-image: linear-gradient(to right, black 2px, transparent 2px),
