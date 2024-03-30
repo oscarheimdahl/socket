@@ -9,7 +9,7 @@
 </script>
 
 <div
-  class={`flex flex-col gap-1 first:mt-auto ${self ? 'self-end items-end' : ''}`}
+  class={`flex flex-col max-w-[10%] gap-1 first:mt-auto ${self ? 'self-end items-end' : ''}`}
 >
   {#if !self && !sameSenderAsPreviousMessage}
     <span class="text-gray-500 text-sm">

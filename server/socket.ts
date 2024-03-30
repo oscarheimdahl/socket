@@ -3,6 +3,7 @@ type Socket = {
   id: string;
   socket: WebSocket;
   name?: string;
+  // Percent of screen
   mousePosition?: { x: number; y: number };
 };
 

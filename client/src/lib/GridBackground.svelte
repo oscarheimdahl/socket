@@ -16,9 +16,12 @@
   let lastSend = Date.now();
   onMount(() => {
     window.addEventListener('mousemove', (e) => {
-      if (lastSend + 100 > Date.now()) return;
+      if (lastSend + 10 > Date.now()) return;
       lastSend = Date.now();
-      send(TOPICS.MOUSE_MOVE, { x: e.clientX, y: e.clientY });
+      send(TOPICS.MOUSE_MOVE, {
+        x: e.clientX / window.innerWidth,
+        y: e.clientY / window.innerHeight,
+      });
     });
   });
 </script>
@@ -26,8 +29,9 @@
 <div class="bg fixed top-0 left-0 w-full h-full">
   {#each positions as { x, y }, i}
     <div
-      class="cursor ease-linear absolute size-[2px] bg-[#ffffff] rounded-full transition-transform duration-100"
-      style="transform: translateX({x}px) translateY({y}px);"
+      class="cursor ease-linear absolute size-[2px] bg-[#ffffff] rounded-full transition-transform duration-[10ms]"
+      style="transform: translateX({x * window.innerWidth}px) translateY({y *
+        innerHeight}px);"
     ></div>
   {/each}
 </div>
