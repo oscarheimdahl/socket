@@ -19,9 +19,7 @@
           Unknown
         </li>
       {:else}
-        <li
-          class="bg-black w-fit border border-gray-500 px-2 py-1 text-fuchsia-900"
-        >
+        <li class="bg-black w-fit border border-gray-500 px-2 py-1 text-white">
           {user}
         </li>
       {/if}

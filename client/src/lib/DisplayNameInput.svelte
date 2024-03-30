@@ -14,7 +14,7 @@
 <input
   on:input={handleDisplayNameChange}
   bind:this={displayNameInput}
-  class={`h-6 flex justify-end bg-transparent outline-none font-bold px-2 placeholder-gray-800 text-white`}
+  class={`h-6 flex justify-end bg-transparent outline-none font-bold px-2 placeholder-[#aaaaaa88] text-white`}
   placeholder="Display Name"
   type="text"
 />
