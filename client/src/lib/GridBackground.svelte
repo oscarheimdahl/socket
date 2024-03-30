@@ -1,11 +1,39 @@
-<div class="bg fixed top-0 left-0 w-full h-full"></div>
+<script lang="ts">
+  import { onMount } from 'svelte';
+  import { onTopic, send } from './socket';
+  import { TOPICS } from '../../../topics';
+
+  type Position = {
+    x: number;
+    y: number;
+  };
+  let positions: Position[] = [];
+
+  onTopic(TOPICS.MOUSE_MOVE, (data) => {
+    positions = data.message;
+  });
+
+  let lastSend = Date.now();
+  onMount(() => {
+    window.addEventListener('mousemove', (e) => {
+      if (lastSend + 100 > Date.now()) return;
+      lastSend = Date.now();
+      send(TOPICS.MOUSE_MOVE, { x: e.clientX, y: e.clientY });
+    });
+  });
+</script>
+
+<div class="bg fixed top-0 left-0 w-full h-full">
+  {#each positions as { x, y }, i}
+    <div
+      class="ease-linear absolute size-2 bg-white opacity-50 rounded-full transition-transform duration-100"
+      style="transform: translateX({x}px) translateY({y}px);"
+    ></div>
+  {/each}
+</div>
 
 <style>
   .bg {
-    /* background-image: radial-gradient(black 2px, transparent 0);
-    background-size: 5px 5px;
-    background-position: -19px -19px; */
-
     background-size: 8px 8px;
     background-image: linear-gradient(to right, black 2px, transparent 2px),
       linear-gradient(to bottom, black 2px, transparent 2px);

@@ -3,6 +3,7 @@ type Socket = {
   id: string;
   socket: WebSocket;
   name?: string;
+  mousePosition?: { x: number; y: number };
 };
 
 let sockets: Socket[] = [];
@@ -42,6 +43,14 @@ export function attachListeners(thisSocket: Socket) {
     if (topic === TOPICS.UPDATE_NAME) {
       thisSocket.name = data;
       broadcastUsers(true);
+    }
+    if (topic === TOPICS.MOUSE_MOVE) {
+      thisSocket.mousePosition = data;
+      broadcastMessage(thisSocket, topic, {
+        message: sockets
+          .filter((socket) => socket.id === thisSocket.id)
+          .map((socket) => socket.mousePosition),
+      });
     }
   };
   thisSocket.socket.onclose = () => {
