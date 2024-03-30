@@ -8,7 +8,9 @@
   const self = message.sentBy === 'self';
 </script>
 
-<div class={`flex flex-col gap-1 ${self ? 'self-end items-end' : ''}`}>
+<div
+  class={`flex flex-col gap-1 first:mt-auto ${self ? 'self-end items-end' : ''}`}
+>
   {#if !self && !sameSenderAsPreviousMessage}
     <span class="text-gray-500 text-sm">
       {message.senderName || 'Unknown'}
@@ -17,7 +19,7 @@
   <div
     class={`
           ${self ? selfStyle : otherStyle}
-          first:mt-auto  bg-gradient-to-t rounded-sm text-white py-1 px-2 w-fit
+            bg-gradient-to-t rounded-sm text-white py-1 px-2 w-fit
   `}
   >
     <span class="w-fit">
