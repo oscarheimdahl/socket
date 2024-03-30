@@ -30,7 +30,7 @@
   .main-container {
     grid-template-columns: 1fr auto 1fr;
 
-    animation: fadeIn 0.4s 1s;
+    animation: fadeIn 0.5s 0.8s;
     animation-iteration-count: 1;
     opacity: 0;
     animation-fill-mode: forwards;

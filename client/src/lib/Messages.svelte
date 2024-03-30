@@ -14,7 +14,6 @@
   });
 
   onTopic(TOPICS.NEW_MESSAGE, (data) => {
-    console.log(`adding`);
     addMessage({
       sentBy: 'other',
       senderName: data.from,
@@ -33,7 +32,7 @@
 
 <div
   bind:this={messageDiv}
-  class="h-96 scroll-smooth w-full no-scrollbar bg-black border-gray-500 border p-4 overflow-y-scroll flex flex-col gap-2"
+  class="bg-[#000000aa] sm:bg-black transition-all h-96 scroll-smooth w-full no-scrollbar border-gray-500 border p-4 overflow-y-scroll flex flex-col gap-2"
 >
   {#each messages as message, i}
     <MessageBubble
