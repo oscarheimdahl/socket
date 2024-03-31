@@ -32,7 +32,7 @@
 
 <div
   bind:this={messageDiv}
-  class="bg-[#000000aa] sm:bg-black transition-all h-96 scroll-smooth w-full no-scrollbar border-gray-500 border p-4 overflow-y-scroll flex flex-col gap-2"
+  class="message-box relative bg-[#000000aa] sm:bg-black transition-all h-96 scroll-smooth w-full no-scrollbar border-gray-500 border overflow-y-scroll p-3 flex flex-col gap-2"
 >
   {#each messages as message, i}
     <MessageBubble
@@ -42,3 +42,36 @@
     />
   {/each}
 </div>
+
+<style>
+  /* .message-box::after {
+    content: '';
+    z-index: -1;
+    animation: pulse 3s infinite;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    bottom: 0rem;
+    left: 0rem;
+    background: radial-gradient(
+      circle at 50% 140%,
+      rgba(0, 0, 0, 1),
+      rgba(0, 0, 0, 0) 50%
+    );
+  } */
+
+  @keyframes pulse {
+    0% {
+      /* transform: scale(0.9); */
+      /* opacity: 0.6; */
+    }
+    50% {
+      /* transform: scale(0.9); */
+      opacity: 0.6;
+    }
+    50% {
+      /* transform: scale(0.9); */
+      /* opacity: 0.6; */
+    }
+  }
+</style>
