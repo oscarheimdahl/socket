@@ -5,7 +5,7 @@
   import { send } from './socket';
   import { addMessage, subscribe } from './store/store';
 
-  let input = '';
+  let input: HTMLInputElement;
   let displayName = '';
 
   subscribe((store) => {
@@ -13,22 +13,23 @@
   });
 
   async function handleClick() {
-    if (!input.trim()) return;
+    if (!input.value.trim()) return;
     send(TOPICS.NEW_MESSAGE, input);
     addMessage({
       sentBy: 'self',
       senderId: 'self',
-      message: input,
+      message: input.value,
       senderName: displayName,
     });
-    input = '';
+    input.value = '';
+    input.focus();
   }
 </script>
 
 <form on:submit|preventDefault={() => {}} class="group flex w-full gap-2">
   <input
     class="rounded-none w-full outline-none p-1 bg-black text-white border border-gray-500"
-    bind:value={input}
+    bind:this={input}
     type="text"
   />
   <SendButton {handleClick} />
