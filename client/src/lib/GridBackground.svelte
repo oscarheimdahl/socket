@@ -41,8 +41,18 @@
     box-shadow: 0 0 5px 2px rgba(255, 255, 255, 0.5);
   }
   .bg {
+    --grid-color: rgba(0, 0, 0, 0.9);
+    --grid-size: 2px;
     background-size: 8px 8px;
-    background-image: linear-gradient(to right, black 2px, transparent 2px),
-      linear-gradient(to bottom, black 2px, transparent 2px);
+    background-image: linear-gradient(
+        to right,
+        var(--grid-color) var(--grid-size),
+        transparent var(--grid-size)
+      ),
+      linear-gradient(
+        to bottom,
+        var(--grid-color) var(--grid-size),
+        transparent var(--grid-size)
+      );
   }
 </style>
