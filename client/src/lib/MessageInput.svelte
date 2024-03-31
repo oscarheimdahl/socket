@@ -13,8 +13,9 @@
   });
 
   async function handleClick() {
+    console.log(input.value);
     if (!input.value.trim()) return;
-    send(TOPICS.NEW_MESSAGE, input);
+    send(TOPICS.NEW_MESSAGE, input.value);
     addMessage({
       sentBy: 'self',
       senderId: 'self',

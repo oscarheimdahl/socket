@@ -2,6 +2,9 @@
   import type { Message } from './types';
 
   export let message: Message;
+
+  console.log(message);
+
   export let sameSenderAsPreviousMessage: boolean;
   const selfStyle = 'from-violet-950 to-violet-900 ring-1 ring-violet-600';
   const otherStyle = 'from-pink-950 to-pink-900 ring-1 ring-pink-600';
