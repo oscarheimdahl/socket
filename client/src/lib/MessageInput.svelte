@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { TOPICS } from '../../../topics';
+  import { TOPICS } from '@root/topics';
   import SendButton from './SendButton.svelte';
 
   import { send } from './socket';

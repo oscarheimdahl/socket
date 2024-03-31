@@ -1,14 +1,6 @@
 <script lang="ts">
   export let handleClick: () => void;
   let clicked = false;
-
-  function _handleClick() {
-    handleClick();
-    clicked = true;
-    setTimeout(() => {
-      clicked = false;
-    }, 200);
-  }
 </script>
 
 <div

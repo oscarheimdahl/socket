@@ -1,6 +1,6 @@
 <script lang="ts">
   import MessageBubble from './MessageBubble.svelte';
-  import { TOPICS } from '../../../topics';
+  import { TOPICS } from '@root/topics';
   import { onTopic } from './socket';
   import type { Message } from './types';
   import { addMessage, subscribe } from './store/store';

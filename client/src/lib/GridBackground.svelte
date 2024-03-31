@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { onTopic, send } from './socket';
-  import { TOPICS } from '../../../topics';
+  import { TOPICS } from '@root/topics';
 
   type Position = {
     x: number;

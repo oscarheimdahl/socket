@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { TOPICS } from '../../../topics';
+  import { TOPICS } from '@root/topics';
   import { onTopic } from './socket';
 
   let users: string | undefined[] = [];
