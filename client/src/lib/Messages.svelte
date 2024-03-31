@@ -4,6 +4,7 @@
   import { onTopic } from './socket';
   import type { Message } from './types';
   import { addMessage, subscribe } from './store/store';
+  import { onMount } from 'svelte';
 
   let messageDiv: HTMLDivElement;
   let messages: Message[] = [];
@@ -28,12 +29,14 @@
       messageDiv.scrollTop = messageDiv.scrollHeight;
     }, 0);
   }
+  onMount(scrollToBottom);
 </script>
 
 <div
   bind:this={messageDiv}
   class="message-box relative bg-[#000000aa] sm:bg-black transition-all h-96 scroll-smooth w-full no-scrollbar border-gray-500 border overflow-y-scroll p-3 flex flex-col gap-2"
 >
+  <div class="h-96 shrink-0 w-full"></div>
   {#each messages as message, i}
     <MessageBubble
       sameSenderAsPreviousMessage={message.senderId ===
