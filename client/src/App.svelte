@@ -1,15 +1,15 @@
 <script lang="ts">
   import Messages from './lib/Messages.svelte';
   import ShadowBlurs from './lib/ShadowBlurs.svelte';
-  import GridBackground from './lib/GridBackground.svelte';
   import DisplayNameInput from './lib/DisplayNameInput.svelte';
   import MessageInput from './lib/MessageInput.svelte';
   import UsersList from './lib/UsersList.svelte';
+  import CursorsVisualizer from './lib/CursorsVisualizer.svelte';
 </script>
 
 <main class="bg-black grid place-items-center h-full">
   <ShadowBlurs />
-  <GridBackground />
+  <CursorsVisualizer />
 
   <div
     class={`main-container gap-2 w-full px-2 z-10 flex justify-center sm:grid`}

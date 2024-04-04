@@ -5,10 +5,14 @@ export function connectHandler(request: Request) {
   if (request.headers.get('upgrade') !== 'websocket') {
     return new Response(msg('Endpoint for websockets only'), { status: 400 });
   }
+  const params = new URL(request.url).searchParams;
+  const clientId = params.get('id');
+
+  if (!clientId) return new Response(msg('Missing client id'), { status: 400 });
 
   const { socket, response } = Deno.upgradeWebSocket(request);
 
-  initSocket(socket);
+  initSocket(socket, clientId);
 
   return response;
 }

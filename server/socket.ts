@@ -9,8 +9,8 @@ type Socket = {
 
 let sockets: Socket[] = [];
 
-export function initSocket(socket: WebSocket) {
-  const newSocket = { socket, id: crypto.randomUUID() };
+export function initSocket(socket: WebSocket, clientId: string) {
+  const newSocket: Socket = { socket, id: clientId };
   attachListeners(newSocket);
 }
 
@@ -19,7 +19,7 @@ export function attachListeners(thisSocket: Socket) {
     broadcastMessage(
       thisSocket,
       TOPICS.USER_JOIN,
-      sockets.map((socket) => socket.name),
+      sockets.map((socket) => ({ name: socket.name, id: socket.id })),
       { includeSelf }
     );
   }
@@ -27,13 +27,14 @@ export function attachListeners(thisSocket: Socket) {
     sockets = sockets.filter((socket) => socket.id !== thisSocket.id);
   }
 
-  thisSocket.socket.onopen = () => {
-    sockets.push(thisSocket);
-    broadcastUsers(true);
-  };
+  thisSocket.socket.onopen = () => {};
   thisSocket.socket.onmessage = (event) => {
     const { topic, data } = JSON.parse(event.data);
 
+    if (topic === TOPICS.USER_JOIN) {
+      sockets.push(thisSocket);
+      broadcastUsers(true);
+    }
     if (topic === TOPICS.NEW_MESSAGE) {
       broadcastMessage(thisSocket, topic, {
         from: thisSocket.name,
@@ -50,7 +51,15 @@ export function attachListeners(thisSocket: Socket) {
       broadcastMessage(thisSocket, topic, {
         message: sockets
           .filter((socket) => socket.id === thisSocket.id)
-          .map((socket) => socket.mousePosition),
+          .map((socket) => ({
+            userId: socket.id,
+            position: socket.mousePosition,
+          })),
+      });
+    }
+    if (topic === TOPICS.MOUSE_CLICK) {
+      broadcastMessage(thisSocket, topic, {
+        message: thisSocket.id,
       });
     }
   };

@@ -4,3 +4,8 @@ export type Message = {
   senderName: string; //sender's name
   senderId: string;
 };
+
+export type User = {
+  name: string;
+  id: string;
+};

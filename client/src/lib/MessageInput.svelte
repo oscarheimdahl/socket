@@ -2,7 +2,7 @@
   import { TOPICS } from '@root/topics';
   import SendButton from './SendButton.svelte';
 
-  import { send } from './socket';
+  import { send } from './socket/socket';
   import { addMessage, subscribe } from './store/store';
 
   let input: HTMLInputElement;
@@ -13,7 +13,6 @@
   });
 
   async function handleClick() {
-    console.log(input.value);
     if (!input.value.trim()) return;
     send(TOPICS.NEW_MESSAGE, input.value);
     addMessage({

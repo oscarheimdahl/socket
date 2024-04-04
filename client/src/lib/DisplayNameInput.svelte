@@ -1,6 +1,6 @@
 <script lang="ts">
   import { TOPICS } from '@root/topics';
-  import { send } from './socket';
+  import { send } from './socket/socket';
 
   let displayNameInput: HTMLInputElement;
 
