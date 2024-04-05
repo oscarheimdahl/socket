@@ -1,5 +1,4 @@
 <script lang="ts">
-  export let handleClick: () => void;
   let clicked = false;
 </script>
 
@@ -18,12 +17,12 @@
   ></div>
 </div>
 <button
+  id="send-button"
   class={`${clicked ? 'border-white' : ''}
           transition-all relative flex w-fit justify-center items-center outline-none
           bg-black border border-gray-500 text-white px-4 button hover:border-white active:border-gray-700 focus-visible:border-white
           `}
   type="submit"
-  on:click={handleClick}
   >Send
 </button>
 

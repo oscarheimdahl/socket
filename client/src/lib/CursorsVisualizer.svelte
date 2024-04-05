@@ -43,7 +43,8 @@
   }
 
   let lastClick = Date.now();
-  function onMouseClick() {
+  function onMouseClick(e: MouseEvent) {
+    if ((e?.target as HTMLElement).id === 'send-button') return;
     const DEBOUNCE = 500;
     if (lastClick + DEBOUNCE > Date.now()) return;
     lastClick = Date.now();
@@ -81,7 +82,7 @@
     >
       <div class="-translate-x-1/2 -translate-y-1/2 pointer-events-none">
         <div
-          class="click-indicator size-80 border-4 border-[#ffffffcc] rounded-full"
+          class="click-indicator size-80 border-4 border-[#ffffff55] rounded-full"
         ></div>
       </div>
     </div>

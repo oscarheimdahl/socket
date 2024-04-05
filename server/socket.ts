@@ -62,6 +62,9 @@ export function attachListeners(thisSocket: Socket) {
         message: thisSocket.id,
       });
     }
+    if (topic === TOPICS.USER_TYPE) {
+      broadcastMessage(thisSocket, topic);
+    }
   };
   thisSocket.socket.onclose = () => {
     removeThisSocket();

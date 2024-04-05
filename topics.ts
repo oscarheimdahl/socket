@@ -4,4 +4,5 @@ export const TOPICS = {
   UPDATE_NAME: 'UPDATE_NAME',
   MOUSE_MOVE: 'MOUSE_MOVE',
   MOUSE_CLICK: 'MOUSE_CLICK',
+  USER_TYPE: 'USER_TYPE',
 } as const;
